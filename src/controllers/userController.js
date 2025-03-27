@@ -37,6 +37,30 @@ exports.loginUser = async (req, res) => {
   }
 };
 
+exports.verifyToken = (req, res, next) => {
+  try {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1]; // Extract token from "Bearer <token>"
+
+    if (!token) {
+      return res
+        .status(403)
+        .json({ message: "Access denied, no token provided" });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ message: "Invalid or expired token" });
+      }
+      req.user = decoded;
+    });
+
+    res.json({ valid: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 exports.getUsers = async (req, res) => {
   const users = await prisma.user.findMany();
   res.json(users);
