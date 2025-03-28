@@ -11,6 +11,7 @@ import px from "../assets/Px.png";
 import syr1 from "../assets/Syr1.png";
 import logo from "../assets/logo.png";
 import { Globe, Mail, Phone } from "lucide-react";
+import bharti from "../assets/bharti.png"
 
 const fetchPrescriptions = async () => {
   const { data } = await api.get("/api/prescriptions/");
@@ -52,7 +53,7 @@ export const Home = () => {
     await new Promise((resolve) => setTimeout(resolve, 500)); // Ensure everything loads properly
 
     html2canvas(prescriptionElement, {
-      scale: 2,
+      scale: window.devicePixelRatio,
       useCORS: true,
       allowTaint: true,
     })
@@ -153,50 +154,50 @@ export const Home = () => {
               id={`prescription-${prescription.id}`}
               className="bg-white rounded-lg shadow-lg max-w-2xl w-full w-[794px] h-[1123px]"
             >
-              <div className="flex gap-x-2 items-center justify-center bg-[#dce9f5] h-[80px]">
+              <div className="flex gap-x-2  py-2 justify-center bg-[#dce9f5] h-[80px]">
                 <img src={isp} className="w-[20%]"></img>
                 <img src={px} className="w-[30%]"></img>
-                <img src={alr2} className="w-[20%]"></img>
+                <img src={alr2} className="w-[10%]"></img>
                 <img src={alr3} className="w-[10%]"></img>
                 <img src={syr1} className="w-[10%]"></img>
+                <img src={bharti} className="w-[10%]"></img>
               </div>
               <div className="flex bg-[#dce9f5]">
                 <div className="bg-[#162c4c] h-[100px] flex flex-col justify-center w-[80%]">
                   <p className="text-white font-bold text-4xl text-center">
                     OPD Card <span className="text-[#2dabde]">Health Camp</span>
                   </p>
-                  <p className="mt-2 flex flex-row items-center gap-x-2 justify-center">
-                    <div className="w-[20px] h-[2px] bg-[#2dacde]"></div>
+                  <p className="mt-2 flex flex-row  gap-x-2 justify-center">
                     <p className="uppercase text-white">
                       Community Relief Programme
                     </p>
                   </p>
                 </div>
                 <div className="w-[2%]"></div>
-                <div className="bg-[#2dabde] w-[18%] flex items-center justify-center">
+                <div className="bg-[#2dabde] w-[18%] flex  justify-center">
                   <img
                     src={logo}
                     className="bg-white rounded-full h-[80px] my-auto"
                   ></img>
                 </div>
               </div>
-              <div className="flex items-center justify-center gap-x-1 py-2">
-                <div className="flex gap-x-2 items-center">
-                  <div>
+              <div className="flex  justify-center gap-x-4 py-2">
+                <div className="flex gap-x-2 ">
+                  <div className="py-1">
                     <Phone className="text-[#2cacde]" size={14} />
                   </div>
                   <p className="text-sm font-bold">+91 81307 23707</p>
                 </div>
-                <div className="flex gap-x-2 items-center">
-                  <div>
+                <div className="flex gap-x-2 ">
+                  <div className="py-1">
                     <Mail className="text-[#2cacde]" size={14} />
                   </div>
                   <p className="text-sm font-bold">
                     Socialupmovementindia@gmail.com
                   </p>
                 </div>
-                <div className="flex gap-x-2 items-center">
-                  <div>
+                <div className="flex gap-x-2 ">
+                  <div className="py-1">
                     <Globe className="text-[#2cacde]" size={14} />
                   </div>
                   <p className="text-sm font-bold">www.Sumindia.com</p>
@@ -204,64 +205,80 @@ export const Home = () => {
               </div>
 
               <div className="px-10">
-                <div className="flex items-center py-2">
+                <div className="flex  py-2">
                   <div className="bg-[#2dacde] w-[10px] py-1 h-[36px]"></div>
-                  <p className="text-white bg-[#172b4c] w-full py-1 px-5 uppercase text-lg flex items-center">
+                  <p className="text-white bg-[#172b4c] w-full py-1 px-5 uppercase text-lg flex ">
                     Registration Form
                   </p>
                 </div>
               </div>
               <div className="px-10">
-                <div className="flex items-center justify-center gap-x-10">
+                <div className="flex  justify-center gap-x-10">
                   <div className="w-[30%]">
                     <p className="text-sm font-bold">Registration Number:</p>
-                    <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
+                    <div className="bg-[#dce9f5] h-[30px] mt-2">
+                      {prescription.registrationNumber}
+                    </div>
                   </div>
                   <div className="w-[40%]">
                     <p className="text-sm font-bold">Department:</p>
-                    <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
+                    <div className="bg-[#dce9f5] h-[30px] mt-2">
+                      {prescription.department}
+                    </div>
                   </div>
                   <div className="w-[30%]">
                     <p className="text-sm font-bold">Date:</p>
-                    <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
+                    <div className="bg-[#dce9f5] h-[30px] mt-2">
+                      {prescription.date}
+                    </div>
                   </div>
                 </div>
               </div>
               <div className="px-10">
-                <div className="flex items-center py-2">
+                <div className="flex  py-2">
                   <div className="bg-[#2dacde] w-[10px] py-1 h-[36px]"></div>
-                  <p className="text-white bg-[#172b4c] w-full py-1 px-5 uppercase text-lg flex items-center">
+                  <p className="text-white bg-[#172b4c] w-full py-1 px-5 uppercase text-lg flex ">
                     Personal Information
                   </p>
                 </div>
               </div>
               <div className="px-10">
-                <div className="flex flex-wrap gap-x-4">
-                  <div className="w-full">
+                <div className="flex flex-wrap">
+                  <div className="w-1/2">
                     <p className="text-sm font-bold">Patient Name</p>
-                    <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
+                    <div className="bg-[#dce9f5] h-[30px] mt-2">
+                      {prescription.patientName}
+                    </div>
                   </div>
-                  <div className="w-full">
+                  <div className="w-1/2">
                     <p className="text-sm font-bold">S/O W/O D/O:</p>
-                    <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
+                    <div className="bg-[#dce9f5] h-[30px] mt-2">
+                      {prescription.relativeName}
+                    </div>
                   </div>
-                  <div className="w-[30%]">
+                  <div className="w-[30%] mr-2">
                     <p className="text-sm font-bold">Age:</p>
-                    <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
+                    <div className="bg-[#dce9f5] h-[30px] mt-2">
+                      {new Date().getFullYear() - new Date(prescription.DOB).getFullYear()}
+                    </div>
                   </div>
-                  <div className="w-[30%]">
+                  <div className="w-[30%] mr-2">
                     <p className="text-sm font-bold">Gender:</p>
-                    <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
+                    <div className="bg-[#dce9f5] h-[30px] mt-2">
+                      {prescription.gender}
+                    </div>
                   </div>
-                  <div className="w-[30%]">
+                  <div className="w-[37%]">
                     <p className="text-sm font-bold">Contact No:</p>
-                    <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
+                    <div className="bg-[#dce9f5] h-[30px] mt-2">
+                      {prescription.contactNumber}
+                    </div>
                   </div>
-                  <div className="w-[30%]">
+                  <div className="w-[30%] mr-[1%]">
                     <p className="text-sm font-bold">H No:</p>
                     <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
                   </div>
-                  <div className="w-[60%]">
+                  <div className="w-[69%]">
                     <p className="text-sm font-bold">Res Add:</p>
                     <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
                   </div>
@@ -271,11 +288,16 @@ export const Home = () => {
                 </div>
               </div>
               <div className="px-10">
-                <div className="h-[500px] bg-[#dce9f5] w-full">
-                  <div className="absolute ml-32 h-[500px] bg-gray-400 w-[2px]"></div>
-                  <div className="flex items-center h-full justify-center">
-                    <img src={logo} className="w-[150px]"></img>
+                <div className="h-[480px] bg-[#dce9f5] w-full">
+                  <div className="absolute ml-32 h-[480px] bg-gray-400 w-[2px]"></div>
+                  <div className="flex  h-full justify-center py-32">
+                    <img src={logo} className="h-[100px] opacity-[30%]"></img>
                   </div>
+                </div>
+              </div>
+              <div className="px-10">
+                <div className="bg-[#172b4c] py-2 text-center w-full text-white uppercase text-lg">
+                  Thank you for your information
                 </div>
               </div>
             </div>
