@@ -4,6 +4,7 @@ import api from "../api/axios";
 const departments = [
   "Orthopedic",
   "Eye",
+  "ENT",
   "Dental",
   "Legal aid",
   "Pharmacy",

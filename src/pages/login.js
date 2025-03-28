@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import bg from "../assets/bg.jpg";
-import logo from "../assets/logo.jpg";
+import logo from "../assets/logo.png";
 import api from "../api/axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";

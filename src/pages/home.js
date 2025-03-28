@@ -4,6 +4,13 @@ import api from "../api/axios";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { useRef } from "react";
+import isp from "../assets/ISPv.png";
+import alr2 from "../assets/Alr2.png";
+import alr3 from "../assets/Alr3.png";
+import px from "../assets/Px.png";
+import syr1 from "../assets/Syr1.png";
+import logo from "../assets/logo.png";
+import { Globe, Mail, Phone } from "lucide-react";
 
 const fetchPrescriptions = async () => {
   const { data } = await api.get("/api/prescriptions/");
@@ -37,27 +44,37 @@ export const Home = () => {
 
   const handlePrint = async (id) => {
     const prescriptionElement = document.getElementById(`prescription-${id}`);
-  
+
     if (!prescriptionElement) return;
-  
+
     prescriptionElement.style.display = "block";
-  
-    await new Promise(resolve => setTimeout(resolve, 500)); // Ensure everything loads properly
-  
-    html2canvas(prescriptionElement, { useCORS: true, allowTaint: true })
+
+    await new Promise((resolve) => setTimeout(resolve, 500)); // Ensure everything loads properly
+
+    html2canvas(prescriptionElement, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+    })
       .then((canvas) => {
-        const imgData = canvas.toDataURL("image/jpeg", 0.8);
-        const pdf = new jsPDF("p", "mm", "a4");
-        const imgWidth = 190;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-  
-        pdf.addImage(imgData, "JPEG", 10, 10, imgWidth, imgHeight);
-  
+        const imgData = canvas.toDataURL("image/png", 1.0);
+        const imgWidth = canvas.width * 0.264583; // Convert px to mm (1 px ≈ 0.264583 mm)
+        const imgHeight = canvas.height * 0.264583;
+
+        // Create a PDF exactly the size of the image
+        const pdf = new jsPDF({
+          orientation: imgWidth > imgHeight ? "l" : "p",
+          unit: "mm",
+          format: [imgWidth, imgHeight], // No margins at all
+        });
+
+        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight, "", "FAST");
+
         // Open the PDF in a new tab instead of downloading
         const pdfBlob = pdf.output("blob");
         const pdfUrl = URL.createObjectURL(pdfBlob);
         const newWindow = window.open(pdfUrl, "_blank");
-  
+
         if (newWindow) {
           newWindow.onload = () => {
             newWindow.print();
@@ -73,8 +90,6 @@ export const Home = () => {
         prescriptionElement.style.display = "none"; // Hide it again
       });
   };
-  
-  
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error loading prescriptions: {error.message}</p>;
@@ -132,32 +147,137 @@ export const Home = () => {
             </tbody>
           </table>
 
-          {/* Hidden prescription details for PDF generation */}
           {data.map((prescription) => (
             <div
               key={prescription.id}
               id={`prescription-${prescription.id}`}
-              className="hidden p-6 bg-white border rounded shadow-md"
+              className="bg-white rounded-lg shadow-lg max-w-2xl w-full w-[794px] h-[1123px]"
             >
-              <h2 className="text-xl font-bold mb-2">Prescription Details</h2>
-              <p>
-                <strong>Doctor:</strong> {prescription.doctorName}
-              </p>
-              <p>
-                <strong>Department:</strong> {prescription.department}
-              </p>
-              <p>
-                <strong>Patient:</strong> {prescription.patientName}
-              </p>
-              <p>
-                <strong>Gender:</strong> {prescription.gender}
-              </p>
-              <p>
-                <strong>Age:</strong> {prescription.age}
-              </p>
-              <p>
-                <strong>Contact:</strong> {prescription.contactNumber}
-              </p>
+              <div className="flex gap-x-2 items-center justify-center bg-[#dce9f5] h-[80px]">
+                <img src={isp} className="w-[20%]"></img>
+                <img src={px} className="w-[30%]"></img>
+                <img src={alr2} className="w-[20%]"></img>
+                <img src={alr3} className="w-[10%]"></img>
+                <img src={syr1} className="w-[10%]"></img>
+              </div>
+              <div className="flex bg-[#dce9f5]">
+                <div className="bg-[#162c4c] h-[100px] flex flex-col justify-center w-[80%]">
+                  <p className="text-white font-bold text-4xl text-center">
+                    OPD Card <span className="text-[#2dabde]">Health Camp</span>
+                  </p>
+                  <p className="mt-2 flex flex-row items-center gap-x-2 justify-center">
+                    <div className="w-[20px] h-[2px] bg-[#2dacde]"></div>
+                    <p className="uppercase text-white">
+                      Community Relief Programme
+                    </p>
+                  </p>
+                </div>
+                <div className="w-[2%]"></div>
+                <div className="bg-[#2dabde] w-[18%] flex items-center justify-center">
+                  <img
+                    src={logo}
+                    className="bg-white rounded-full h-[80px] my-auto"
+                  ></img>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-x-1 py-2">
+                <div className="flex gap-x-2 items-center">
+                  <div>
+                    <Phone className="text-[#2cacde]" size={14} />
+                  </div>
+                  <p className="text-sm font-bold">+91 81307 23707</p>
+                </div>
+                <div className="flex gap-x-2 items-center">
+                  <div>
+                    <Mail className="text-[#2cacde]" size={14} />
+                  </div>
+                  <p className="text-sm font-bold">
+                    Socialupmovementindia@gmail.com
+                  </p>
+                </div>
+                <div className="flex gap-x-2 items-center">
+                  <div>
+                    <Globe className="text-[#2cacde]" size={14} />
+                  </div>
+                  <p className="text-sm font-bold">www.Sumindia.com</p>
+                </div>
+              </div>
+
+              <div className="px-10">
+                <div className="flex items-center py-2">
+                  <div className="bg-[#2dacde] w-[10px] py-1 h-[36px]"></div>
+                  <p className="text-white bg-[#172b4c] w-full py-1 px-5 uppercase text-lg flex items-center">
+                    Registration Form
+                  </p>
+                </div>
+              </div>
+              <div className="px-10">
+                <div className="flex items-center justify-center gap-x-10">
+                  <div className="w-[30%]">
+                    <p className="text-sm font-bold">Registration Number:</p>
+                    <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
+                  </div>
+                  <div className="w-[40%]">
+                    <p className="text-sm font-bold">Department:</p>
+                    <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
+                  </div>
+                  <div className="w-[30%]">
+                    <p className="text-sm font-bold">Date:</p>
+                    <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="px-10">
+                <div className="flex items-center py-2">
+                  <div className="bg-[#2dacde] w-[10px] py-1 h-[36px]"></div>
+                  <p className="text-white bg-[#172b4c] w-full py-1 px-5 uppercase text-lg flex items-center">
+                    Personal Information
+                  </p>
+                </div>
+              </div>
+              <div className="px-10">
+                <div className="flex flex-wrap gap-x-4">
+                  <div className="w-full">
+                    <p className="text-sm font-bold">Patient Name</p>
+                    <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
+                  </div>
+                  <div className="w-full">
+                    <p className="text-sm font-bold">S/O W/O D/O:</p>
+                    <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
+                  </div>
+                  <div className="w-[30%]">
+                    <p className="text-sm font-bold">Age:</p>
+                    <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
+                  </div>
+                  <div className="w-[30%]">
+                    <p className="text-sm font-bold">Gender:</p>
+                    <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
+                  </div>
+                  <div className="w-[30%]">
+                    <p className="text-sm font-bold">Contact No:</p>
+                    <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
+                  </div>
+                  <div className="w-[30%]">
+                    <p className="text-sm font-bold">H No:</p>
+                    <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
+                  </div>
+                  <div className="w-[60%]">
+                    <p className="text-sm font-bold">Res Add:</p>
+                    <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
+                  </div>
+                  <div className="w-full mb-2">
+                    <div className="bg-[#dce9f5] h-[30px] mt-2"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="px-10">
+                <div className="h-[500px] bg-[#dce9f5] w-full">
+                  <div className="absolute ml-32 h-[500px] bg-gray-400 w-[2px]"></div>
+                  <div className="flex items-center h-full justify-center">
+                    <img src={logo} className="w-[150px]"></img>
+                  </div>
+                </div>
+              </div>
             </div>
           ))}
         </div>

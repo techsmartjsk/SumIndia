@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { LayoutDashboard, File, Files, User2, LogOut } from "lucide-react";
-import logo from "../assets/logo.jpg";
+import logo from "../assets/logo.png";
 
 export const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
